@@ -1,0 +1,28 @@
+version: '3.7'
+
+services: 
+  mongodb:
+    image: mongo
+    container_name: mongod1
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=demo1
+      - MONGO_INITDB_ROOT_USERNAME=dario
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-expressd1
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME:dario
+      - ME_CONFIG_MONGODB_ADMINPASSWORD:secret
+      - ME_CONFIG_MONGODB_URL:mongodb://0.0.0.0:27017/
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
